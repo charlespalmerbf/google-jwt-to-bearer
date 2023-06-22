@@ -31,9 +31,11 @@ Installation
 
 4.  Set up your environment variables by creating a `.env` file and populating it with the required values:
 
-    `SERVICE_ACCOUNT_EMAIL=your-service-account-email@example.com
-    PRIVATE_KEY=your-service-account-private-key
-    CLAIM_SET_SCOPE=desired-scope`
+    ```
+        SERVICE_ACCOUNT_EMAIL=your-service-account-email@example.com
+        PRIVATE_KEY=your-service-account-private-key
+        CLAIM_SET_SCOPE=desired-scope
+    ```
 
 Usage
 -----
