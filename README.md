@@ -1,7 +1,7 @@
 JWT to Bearer Converter
 =======================
 
-This is a Node.js script that converts a JSON Web Token (JWT) into a Bearer token by making a request to the Google OAuth 2.0 API.
+This is a Node.js script that converts a JKF (JSON Key File) into a JSON Web Token (JWT) into a Bearer token by making a request to the Google OAuth 2.0 API.
 
 Prerequisites
 -------------
