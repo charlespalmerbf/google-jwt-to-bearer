@@ -23,7 +23,7 @@ function getOAuthToken(jwt) {
                 "Content-Type": "application/x-www-form-urlencoded",
             },
         };
-        
+
         var req = https.request(option, function (res) {
             var result = "";
             res.on("data", function (chunk) {
@@ -42,8 +42,10 @@ function getOAuthToken(jwt) {
     });
 }
 
-async function jwtToBearer(){
-    const result = await getOAuthToken(jwt).catch(err => { console.log(err)});
+async function jwtToBearer() {
+    const result = await getOAuthToken(jwt).catch((err) => {
+        console.log(err);
+    });
     const json = JSON.parse(result);
     console.log(json);
 }
