@@ -42,9 +42,9 @@ function getOAuthToken(jwt) {
     });
 }
 
-async function test(){
-    let result = await getOAuthToken(jwt).catch(err => { console.log(err)});
-    let json = JSON.parse(result);
+async function jwtToBearer(){
+    const result = await getOAuthToken(jwt).catch(err => { console.log(err)});
+    const json = JSON.parse(result);
     console.log(json);
 }
 
@@ -83,4 +83,4 @@ const encodedSignature = signature
 
 const jwt = `${encodedHeader}.${encodedClaimSet}.${encodedSignature}`;
 
-test()
+jwtToBearer();
