@@ -13,7 +13,6 @@ function toBase64URL(json) {
 
 function getOAuthToken(jwt) {
     return new Promise((resolve, reject) => {
-        // request option
         var option = {
             hostname: "oauth2.googleapis.com",
             path: `/token?grant_type=urn:ietf:params:oauth:grant-type:jwt-bearer&assertion=${jwt}`,
@@ -43,46 +42,51 @@ function getOAuthToken(jwt) {
 }
 
 async function jwtToBearer() {
+    const header = {
+        alg: "RS256",
+        typ: "JWT",
+    };
+
+    const now = new Date().getTime() / 1000;
+    const oneHour = 60 * 60;
+    const expireTime = now + oneHour;
+    const claimSet = {
+        iss: process.env.SERVICE_ACCOUNT_EMAIL,
+        iat: now,
+        exp: expireTime,
+        scope: process.env.CLAIM_SET_SCOPE,
+        aud: "https://oauth2.googleapis.com/token",
+    };
+
+    const encodedHeader = toBase64URL(header);
+    const encodedClaimSet = toBase64URL(claimSet);
+
+    const crypto = require("crypto");
+
+    const signer = crypto.createSign("RSA-SHA256");
+
+    signer.write(encodedHeader + "." + encodedClaimSet);
+    signer.end;
+
+    const signature = signer.sign(process.env.PRIVATE_KEY, "base64");
+
+    const encodedSignature = signature
+        .replace(/\+/g, "-")
+        .replace(/\//g, "_")
+        .replace(/=/g, "");
+
+    const jwt = `${encodedHeader}.${encodedClaimSet}.${encodedSignature}`;
+
     const result = await getOAuthToken(jwt).catch((err) => {
-        console.log(err);
+        console.debug(err);
     });
     const json = JSON.parse(result);
-    console.log(json);
+
+    return json;
 }
 
-const header = {
-    alg: "RS256",
-    typ: "JWT",
-};
-
-const now = new Date().getTime() / 1000;
-const oneHour = 60 * 60;
-const expireTime = now + oneHour;
-const claimSet = {
-    iss: process.env.SERVICE_ACCOUNT_EMAIL,
-    iat: now,
-    exp: expireTime,
-    scope: process.env.CLAIM_SET_SCOPE,
-    aud: "https://oauth2.googleapis.com/token",
-};
-
-const encodedHeader = toBase64URL(header);
-const encodedClaimSet = toBase64URL(claimSet);
-
-const crypto = require("crypto");
-
-const signer = crypto.createSign("RSA-SHA256");
-
-signer.write(encodedHeader + "." + encodedClaimSet);
-signer.end;
-
-const signature = signer.sign(process.env.PRIVATE_KEY, "base64");
-
-const encodedSignature = signature
-    .replace(/\+/g, "-")
-    .replace(/\//g, "_")
-    .replace(/=/g, "");
-
-const jwt = `${encodedHeader}.${encodedClaimSet}.${encodedSignature}`;
-
 jwtToBearer();
+
+module.exports = {
+    jwtToBearer,
+};
