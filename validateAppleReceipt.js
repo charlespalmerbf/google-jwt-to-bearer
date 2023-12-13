@@ -13,23 +13,33 @@ async function validateAppleReceipt(receiptData) {
 
         if (response.data.status === 0) {
             // ----- destructure verifyReceipt endpoint response into its seperate keys. -----
-            const {
-                latest_receipt_info,
-                pending_renewal_info,
-            } = response.data;
+            const { latest_receipt_info, pending_renewal_info } = response.data;
 
             // ----- log latest receipt info. -----
-            const filteredObject = latest_receipt_info.find((item) => {
+            const filteredObjects = latest_receipt_info.filter((item) => {
                 return (
                     item.original_transaction_id ===
                     pending_renewal_info[0].original_transaction_id
                 );
             });
 
-            console.debug(filteredObject);
+            const currentDateInMs = new Date().getTime();
+
+            const mostRecentPurchase = filteredObjects.reduce((closest, obj) => {
+                const dateDiff = Math.abs(
+                    obj.purchase_date_ms - currentDateInMs
+                );
+                const closestDiff = Math.abs(
+                    closest.purchase_date_ms - currentDateInMs
+                );
+
+                return dateDiff < closestDiff ? obj : closest;
+            });
+
+            console.log(mostRecentPurchase);
 
             const isValid = Boolean(
-                Number(Date.now()) < Number(filteredObject.expires_date_ms)
+                Number(Date.now()) < Number(mostRecentPurchase.expires_date_ms)
             );
 
             console.debug(`isValid: ${isValid}`);
