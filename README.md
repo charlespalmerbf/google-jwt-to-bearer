@@ -1,4 +1,4 @@
-Validate Google Subscription Receipt
+Validating a Google subscription receipt
 =======================
 
 This is a Node.js script that can be used to validate Google Play Store receipts for Android in-app purchases using server-side validation. It leverages Google's Android Publisher API to verify subscriptions and products.
@@ -49,7 +49,7 @@ If the active subscription IS NOT past its expiry, but ISN'T marked as auto rene
 
 The Node.js script logs an `isValid` calculation to the console factoring in the scenario described above.
 
-Validate Apple Subscription Receipt
+Validating an Apple subscription receipt
 =======================
 
 This Node.js script allows you to validate Apple subscription receipts using the iTunes verifyReceipt endpoint. It checks the validity of a subscription based on the latest receipt information and provides insights into the subscription's status, expiration, and auto-renewal.
