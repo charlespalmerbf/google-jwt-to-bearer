@@ -8,8 +8,8 @@ const { jwtToBearer } = require("./jwt");
 
 const cancellationReasons = {
     0: "The user canceled the subscription auto-renewal.",
-    1: "Subscription was canceled by the system. This is most often caused by a billing issue. ",
-    2: "The user switched to a different subscription plan. ",
+    1: "Subscription was canceled by the system. This is most often caused by a billing issue.",
+    2: "The user switched to a different subscription plan.",
     3: "The developer canceled the subscription.",
 };
 
@@ -22,7 +22,7 @@ async function validateGoogleReceipt(isSub) {
         const formData = new FormData();
 
         formData.append("action", "login");
-        formData.append("username", "charlespalmerbf@gmail.com");
+        formData.append("username", "androidsubscription@gmail.com");
         formData.append("password", `${process.env.TTP_USER_PASSWORD}`);
 
         const userInfo = await axios.post(`${process.env.API_BASE}`, formData, {

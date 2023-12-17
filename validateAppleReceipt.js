@@ -17,7 +17,7 @@ async function validateAppleReceipt() {
         const formData = new FormData();
 
         formData.append("action", "login");
-        formData.append("username", "charlespalmerbf@gmail.com");
+        formData.append("username", "iossubscription@gmail.com");
         formData.append("password", `${process.env.TTP_USER_PASSWORD}`);
 
         const { data } = await axios.post(`${process.env.API_BASE}`, formData, {
@@ -37,7 +37,7 @@ async function validateAppleReceipt() {
         );
 
         if (response.data.status === 0) {
-            // ----- destructure verifyReceipt endpoint response into its seperate keys. -----
+            // ----- destructure verifyReceipt endpoint response into its separate keys. -----
             const { latest_receipt_info, pending_renewal_info } = response.data;
 
             // ----- log pending renewal info. -----
