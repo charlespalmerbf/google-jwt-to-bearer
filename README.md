@@ -10,7 +10,7 @@ Before running this script, ensure you have the following:
 
 -   Node.js installed on your machine.
 -   These values in a .env file:
-    - `TTP_USER_PASSWORD`: Your Theory Test Pass user password
+    - `TTP_USER_PASSWORD`: Your user password
     - `API_BASE`: Base URL for the API
     - `ANDROID_BUNDLE_ID`: Your Android app's bundle ID
  
@@ -61,7 +61,7 @@ Before running this script, ensure you have the following:
 
 -   Node.js installed on your machine.
 -   These values in a .env file:
-    - `TTP_USER_PASSWORD`: Your Theory Test Pass user password
+    - `TTP_USER_PASSWORD`: Your user password
     - `API_BASE`: Base URL for the API
     - `IOS_SHARED_SECRET`: Your iOS app's shared secret
  
