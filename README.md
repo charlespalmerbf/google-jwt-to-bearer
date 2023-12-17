@@ -1,4 +1,55 @@
-JWT to Bearer Converter
+Validate Google Subscription Receipt
+=======================
+
+This is a Node.js script that can be used to validate Google Play Store receipts for Android in-app purchases using server-side validation. It leverages Google's Android Publisher API to verify subscriptions and products.
+
+Prerequisites
+-------------
+
+Before running this script, ensure you have the following:
+
+-   Node.js installed on your machine.
+-   These values in a .env file:
+    - `TTP_USER_PASSWORD`: Your Theory Test Pass user password
+    - `API_BASE`: Base URL for the API
+    - `ANDROID_BUNDLE_ID`: Your Android app's bundle ID
+ 
+Usage
+-----
+The provided Node.js script can be used to validate a users latest in app subscription using their purchase token. 
+
+The purchase token is saved to the users account at the point of purchase and is returned at the point of login within the `lastpaymenttoken` attribute.
+
+To validate an Android subscription, we make a `GET` request to this url:
+
+`"https://androidpublisher.googleapis.com/androidpublisher/v3/applications" +
+            /${process.env.ANDROID_BUNDLE_ID}/purchases/${type}/${fullReceipt.productId} +
+            /tokens/${fullReceipt.purchaseToken}?access_token=${accessTokenInfo.access_token};`
+
+-   To this url, we pass five values:
+    - `process.env.ANDROID_BUNDLE_ID`: This is the applications bundle id, and comes from the .env file.
+    - `type`: This indicates if we are verifying a sandbox or production purchase.
+    - `fullReceipt.productId`: This is the product id from the most recent subscription purchase, this comes from the `lastpaymenttoken` retrieved from the user login.
+    - `fullReceipt.purchaseToken`: This is the token for the most recent subscription purchase, this comes from the `lastpaymenttoken` retrieved from the user login.
+    - `accessTokenInfo.access_token`: This value comes from the jwt to bearer function we have already implemented.
+      
+Verifying an Android subscriptions validity
+-----
+
+To validate an Android subscription, we should first ensure that the subscription we are trying to validate is an Android subscription, this can be done by checking the payment platform specified on the Subscription record in Joomla.
+
+We then need both the `productId` and `purchaseToken` from the `lastpaymenttoken`, which will need to be parsed first as its stored as a stringified json object, if either of these attributes are unavailable, we should not attempt to validate the subscription. (This may be the case for some legacy accounts which will need to be ported over manually.)
+
+-   When checking if a subscription is valid, we can use three values returned within the data object when making a `GET` request to the url above:
+    - `expiryTimeMillis`: The expiry time of the most recent subscription, in ms (milliseconds).
+    - `autoRenewing`: If the subscription is set to auto renew. This will be a boolean value.
+    - `cancelReason`: This value will represent the reasoning behind the user cancelling their subscription, a data map has been provided within the Node.js script to cover the available reasonings.
+ 
+If the active subscription IS NOT past its expiry time, IS marked as auto renewing and DOES NOT have a `cancelReason` attribute, we can consider this subscription valid.
+
+If the active subscription IS NOT past its expiry, but ISN'T marked as auto renewing and has a `cancelReason`, the subscription should remain active BUT should be marked as cancelled in Joomla, this will then restrict access at the end of the billing period. 
+
+JWT to Bearer Conversion
 =======================
 
 This is a Node.js script that converts a JKF (JSON Key File) into a JSON Web Token (JWT) into a Bearer token by making a request to the Google OAuth 2.0 API.
