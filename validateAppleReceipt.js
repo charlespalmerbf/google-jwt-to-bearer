@@ -73,7 +73,7 @@ async function validateAppleReceipt() {
             const isValid = Boolean(
                 Number(Date.now()) <
                     Number(mostRecentPurchase.expires_date_ms) ||
-                    Boolean(pending_renewal_info[0].auto_renew_status)
+                    Boolean(pending_renewal_info[0].auto_renew_status === "1")
             );
 
             // ----- log the subscriptions expiration intent, if it exists. -----
@@ -89,7 +89,7 @@ async function validateAppleReceipt() {
             // ----- log the subscriptions auto renewal status. -----
             console.debug(
                 `Auto Renewing: ${Boolean(
-                    pending_renewal_info[0].auto_renew_status
+                    pending_renewal_info[0].auto_renew_status === "1"
                 )}`
             );
 

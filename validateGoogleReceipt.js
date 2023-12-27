@@ -8,7 +8,7 @@ const { jwtToBearer } = require("./jwt");
 
 const cancellationReasons = {
     0: "The user canceled the subscription auto-renewal.",
-    1: "Subscription was canceled by the system. This is most often caused by a billing issue.",
+    1: "Subscription was canceled by the system. This is most often caused by a billing issue or the origin was sandbox.",
     2: "The user switched to a different subscription plan.",
     3: "The developer canceled the subscription.",
 };
