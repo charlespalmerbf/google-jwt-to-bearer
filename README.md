@@ -115,9 +115,9 @@ We currently have both of these setup to send the request to /apple-notification
 
 Both Webhooks send the purchase token (in some variation) that the server would have recieved when the user originally purchased the subscription in the post request. We'll then use this to fetch the user with a matching purchase token (a new field may need to be added so we can save just the purchase token as we currently store the entire receipt object). 
 
-Once we've retrieved the correct user, we can then hit the endpoints mentioned above to get the up to date subscription state, this should be done every time the Webhook gets fired to ensure we capture events such as cancelations, renewals, refunds etc.
+Once we've retrieved the correct user, we can then hit the verify endpoints mentioned above to get the up to date subscription state, this should be done every time the Webhook gets fired to ensure we capture events such as cancelations, renewals, refunds etc.
 
-If we are unable to find a user with the token provided, it could be from a legacy customer that this new system will not work for as we don't have all the information we need on the user object. In these cases we should save the contents of the post request to a text file as we do currently, this can then be used for resolving any issues and will help with debugging.
+If we are unable to find a user with the token provided, it could be from a legacy customer, as this new system will not work for them as we don't have all the information we need on the user object. In these cases we should save the contents of the post request to a text file as we do currently, this can then be used for resolving any issues and will help with debugging in the future as we will need to update these records manually.
 
 JWT to Bearer Conversion
 =======================
