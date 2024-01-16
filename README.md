@@ -117,6 +117,8 @@ Both Webhooks send the purchase token (in some variation) that the server would 
 
 Once we've retrieved the correct user, we can then hit the verify endpoints mentioned above to get the up to date subscription state, this should be done every time the Webhook gets fired to ensure we capture events such as cancelations, renewals, refunds etc.
 
+Once the verify endpoints have been hit, we can update the cancelled property on the subscription based on the response, and also update the expiry date. This ideally should be done every time the webhook is fired, to ensure the expiry date in Joomla matches what the user can see in their respective app store.
+
 If we are unable to find a user with the token provided, it could be from a legacy customer, as this new system will not work for them as we don't have all the information we need on the user object. In these cases we should save the contents of the post request to a text file as we do currently, this can then be used for resolving any issues and will help with debugging in the future as we will need to update these records manually.
 
 JWT to Bearer Conversion
