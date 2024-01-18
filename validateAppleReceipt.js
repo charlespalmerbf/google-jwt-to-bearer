@@ -47,7 +47,8 @@ async function validateAppleReceipt() {
             const filteredObjects = latest_receipt_info.filter((item) => {
                 return (
                     item.original_transaction_id ===
-                    pending_renewal_info[0].original_transaction_id
+                        pending_renewal_info[0].original_transaction_id &&
+                    item.product_id === fullReceipt.productId
                 );
             });
 
